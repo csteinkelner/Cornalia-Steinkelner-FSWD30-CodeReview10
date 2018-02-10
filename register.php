@@ -21,10 +21,6 @@
 		$name = strip_tags($name);		//schutz for fremdangriffen (code/sql)
 		$name = htmlspecialchars($name);
 
-		$surname = trim($_POST['surname']);
-		$surname = strip_tags($surname);
-		$surname = htmlspecialchars($surname);
-
 		$email = trim($_POST['email']);
 		$email = strip_tags($email);
 		$email = htmlspecialchars($email);
@@ -44,19 +40,6 @@
 		} else if (!preg_match("/^[a-zA-Z ]+$/",$name)) {
 			$error = true;
 			$nameError = "Name must contain alphabets and space.";
-		}
-
-		// basic surname validation
-
-		if (empty($surname)) {
-			$error = true;
-			$surnameError = "Please enter your full name.";
-		} else if (strlen($name) < 3) {
-		   	$error = true;
-		   	$surnameError = "Name must have atleat 3 characters.";
-		} else if (!preg_match("/^[a-zA-Z ]+$/",$name)) {
-			$error = true;
-			$surnameError = "Name must contain alphabets and space.";
 		}
 
 		//basic email validation
@@ -91,14 +74,13 @@
 
 		// if there's no error, continue to signup
 		if( !$error ) {
-		   	$query = "INSERT INTO users(first_ame,surname,userEmail,userPass) VALUES('$name','$surname','$email','$password')";
+		   	$query = "INSERT INTO users(userName,userEmail,userPass) VALUES('$name','$email','$password')";
 		   	$res = mysqli_query($conn, $query);
 
 			if ($res) {
 				$errTyp = "success";
 				$errMSG = "Successfully registered, you may login now";
 				unset($name);
-				unset($surname);
 				unset($email);
 				unset($pass);
 		   	} else {
@@ -114,50 +96,77 @@
 <html>
 <head>
 	<title>Login & Registration System</title>
+
+	 <link rel="stylesheet" type="text/css" href="style.css">
+
+  <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- font -->
+  <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Great+Vibes" rel="stylesheet">
+  <style type="text/css">
+  	body{
+  		background-image: url('background.jpg')
+  	}
+  	#box{
+      background-color: rgba(255,255,255,0.6);
+      padding: 10%;
+    }
+  </style>
 </head>
 <body>
+	<header id="header" class="">
+    	<h1>The big Library</h1>
+ 	</header><!-- /header -->
+ 	<div class="container">
+    	<div class="row">
+			<div class="col-lg-4 col-md-4 col-4"></div>
 
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off">
-        <h2>Sign Up.</h2>
+			<div class="col-lg-5 col-md-5 col-5 offset-lg-5 offset-md-5 col-offset-5" id="box">
+			    <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" autocomplete="off">
+			        <h2>Sign Up.</h2>
+					
+					<a href="index.php">Sign in Here...</a>
+			        <hr />
 
-        <hr />
+			        <?php
+						if ( isset($errMSG) ) {
+					?>
 
-        <?php
-			if ( isset($errMSG) ) {
-		?>
+					        <div class="alert">
+					 			<?php echo $errMSG; ?>
+							</div>
 
-		        <div class="alert">
-		 			<?php echo $errMSG; ?>
+					<?php
+
+			   			}
+					?>
+
+					<input type="text" name="name" class="form-control" placeholder="Enter Name" maxlength="50" value="<?php echo $name ?>" />
+
+					<span class="text-danger"><?php echo $nameError; ?></span>
+
+					<input type="email" name="email" class="form-control" placeholder="Enter Your Email" maxlength="40" value="<?php echo $email ?>" />
+
+					<span class="text-danger"><?php echo $emailError; ?></span>
+
+					<input type="password" name="pass" class="form-control" placeholder="Enter Password" maxlength="15" />
+
+					<span class="text-danger"><?php echo $passError; ?></span>
+
+					<hr />
+
+					<button type="submit" class="btn btn-block btn-primary" name="btn-signup">Sign Up</button>
+           
 				</div>
-
-		<?php
-
-   			}
-		?>
-
-		<input type="text" name="name" class="form-control" placeholder="Enter Name" maxlength="50" value="<?php echo $name ?>" />
-
-		<span class="text-danger"><?php echo $nameError; ?></span>
-
-		<input type="text" name="surname" class="form-control" placeholder="Enter Surname" maxlength="50" value="<?php echo $surname ?>" />
-
-		<span class="text-danger"><?php echo $nameError; ?></span>
-
-		<input type="email" name="email" class="form-control" placeholder="Enter Your Email" maxlength="40" value="<?php echo $email ?>" />
-
-		<span class="text-danger"><?php echo $emailError; ?></span>
-
-		<input type="password" name="pass" class="form-control" placeholder="Enter Password" maxlength="15" />
-
-		<span class="text-danger"><?php echo $passError; ?></span>
-
-		<hr />
-
-		<button type="submit" class="btn btn-block btn-primary" name="btn-signup">Sign Up</button>
-
-		<hr />
-
-		<a href="index.php">Sign in Here...</a>
+			</div>
+		</div>
     </form>
 
 </body>
