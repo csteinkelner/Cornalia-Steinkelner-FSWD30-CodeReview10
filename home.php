@@ -15,7 +15,7 @@
 	$userRow=mysqli_fetch_array($res, MYSQLI_ASSOC);
 
 	$sql = "SELECT * FROM media";
-	// $sql = "SELECT name, surname FROM author_interpret";
+	// $sql = "SELECT name FROM author_interpret";
 	// $sql = "SELECT name FROM publisher";
 	// $sql = "SELECT type FROM type";
 	$result = mysqli_query($conn, $sql);
@@ -43,7 +43,6 @@
 
 	<header id="header" class="">
 		<h1>Welcome to the big Library, <?php echo $userRow['userName']; ?>!</h1>
-		<h3><?php echo $userRow['userName']; ?></h3>
 
 
 	</header><!-- /header -->
@@ -59,43 +58,44 @@
 		
 
 	<div class="container">
-
-		<table class="table">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Cover</th>
-					<th>ISBM</th>
-					<th>Title</th>
-					<th>Author/interpret</th>
-					<th>short description</th>
-					<th id="thA">publishing date</th>
-					<th>publisher</th>
-					<th>type</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php 
-					while ($row = mysqli_fetch_assoc($result)) {
-						echo 
-							" 
-							<tr>
-								<td>".$row["media_id"]."</td>
-								<td> <img src='".$row["image"]."'></td>
-								<td>".$row["ISBN_code"]."</td>
-								<td>".$row["title"]."</td>
-								<td>".$row["fk_author_id"]."</td>
-								<td>".$row["short_description"]."</td>
-								<td>".$row["publish_date"]."</td>
-								<td>".$row["fk_publisher_id"]."</td>
-								<td>".$row["fk_type_id"]."</td>
-							</tr>
-							";
-					};
-				?>
-			</tbody>
-		</table>
-		
+		<div class="table-responsive">
+			
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Cover</th>
+						<th scope="col">ISBM</th>
+						<th scope="col">Title</th>
+						<th scope="col">Author/interpret</th>
+						<th scope="col">description</th>
+						<th scope="col" id="thA">publishing date</th>
+						<th scope="col">publisher</th>
+						<th scope="col">type</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php 
+						while ($row = mysqli_fetch_assoc($result)) {
+							echo 
+								" 
+								<tr>
+									<td scope='row'>".$row["media_id"]."</td>
+									<td> <img src='".$row["image"]."'></td>
+									<td>".$row["ISBN_code"]."</td>
+									<td>".$row["title"]."</td>
+									<td>".$row["fk_author_id"]."</td>
+									<td>".$row["short_description"]."</td>
+									<td>".$row["publish_date"]."</td>
+									<td>".$row["fk_publisher_id"]."</td>
+									<td>".$row["fk_type_id"]."</td>
+								</tr>
+								";
+						};
+					?>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </body>
 </html>
