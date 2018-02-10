@@ -29,6 +29,11 @@ td{
 	background-color: #F0F0F0;
 }
 img{
-	width: 150px;
+	width: 60%;
 	box-shadow: 0px 5px 10px gray;
+}
+@media (max-device-width: 800px) {
+	img{
+		width: 200%;
+	}
 }
